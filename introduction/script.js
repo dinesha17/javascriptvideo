@@ -47,3 +47,6 @@ a&b
 
 let tickets =prompt("what your tickets?");
 console.log("hi",tickets*20)
+
+
+// Documnet  objet model dom
