@@ -26,8 +26,11 @@ console.log(number1)
 let number2 =1.5e12
 // e =10  1.5 *1012
 console.log(number2)
+
 // Infinity
 // let number =5/0
+
+
 
 // base number system
 // base10 -decimal(0-9)

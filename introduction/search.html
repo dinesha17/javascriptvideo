@@ -1,0 +1,213 @@
+<div class="content-wrapper cust_scrollbar bg-white common_control_1">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="body_pannal">
+  
+          <div class="row">
+            <div class="col-md-12">
+              <h5 class="title_1 mb-2">{{labels?.mapping}}</h5>
+              <!-- <h5 class="title_1">{{labels?.teamUserMap1}}</h5> -->
+  
+              <div class="row">
+                <div class="col-md-12">
+                  <form [formGroup]="teamMapForm" class="w-100 bg-white" autocomplete="off">
+  
+                    <div class="row">
+                      <div class="col-md-4">
+                        <mat-form-field appearance="fill" class="w-100">
+                          <mat-label>{{labels?.team_name}}</mat-label>
+                          <mat-select panelClass="myPanelClass" formControlName="teamId"
+                            (selectionChange)="teamIdDropChange()" required>
+                            <mat-option class="select-span">{{labels?.select_here}}</mat-option>
+                            <mat-option *ngFor="let teamId of teamList" [value]="teamId.id">
+                              {{teamId.name}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+  
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="rounded-0 shadow-smCCC">
+                          <div class="row">
+                            <div class="col-md-12 mb-4">
+                              <div class="row">
+                                <div class="col-md-5 mb-3">
+                                  <div class="cust_scrollbar mapping_divBox">
+                                    <table mat-table [dataSource]="fromDataSource"
+                                      class="dTable alt-custom-table table custom_table_1" matSort>
+                                      <ng-container matColumnDef="Select">
+                                        <th mat-header-cell *matHeaderCellDef class="c-w-5 pl-2">
+                                          <mat-checkbox color="primary" (change)="$event ? masterToggle() : null;"
+                                            [checked]="leftSelection.hasValue() && isAllSelected()"
+                                            [indeterminate]="leftSelection.hasValue() && !isAllSelected()"
+                                            [aria-label]="checkboxLabel()">
+                                          </mat-checkbox>
+                                        </th>
+                                        <td mat-cell *matCellDef="let row">
+                                          <mat-checkbox color="primary" (click)="$event.stopPropagation()"
+                                            (change)="$event ? leftSelection.toggle(row) : null;"
+                                            [checked]="leftSelection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                                          </mat-checkbox>
+                                        </td>
+                                      </ng-container>
+                                      <!-- <ng-container matColumnDef="userId">
+                                          <th mat-header-cell *matHeaderCellDef mat-sort-header class="c-w-15">
+                                            UserID</th>
+                                          <td nowrap mat-cell *matCellDef="let element;let i=index;"
+                                            [ngClass]="{'table-tr-bg-color': selectedRow == i}">
+                                            {{element.userId}}</td>
+                                        </ng-container> -->
+                                      <ng-container matColumnDef="firstName">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-2">
+                                          {{labels?.allocated}}</th>
+                                        <td mat-cell *matCellDef="let element;let i=index;"
+                                          [ngClass]="{'table-tr-bg-color': selectedRow == i}">
+                                          {{element.firstName}} {{element.middleName}} {{element.lastName}}
+                                        </td>
+                                      </ng-container>
+                                      <!-- <ng-container matColumnDef="middleName">
+                                          <th mat-header-cell *matHeaderCellDef mat-sort-header class="c-w-10">
+                                            middleName
+                                          </th>
+                                          <td mat-cell *matCellDef="let element;let i=index;"
+                                            [ngClass]="{'table-tr-bg-color': selectedRow == i}">
+                                            {{element.middleName}} </td>
+                                        </ng-container> -->
+                                      <!-- <ng-container matColumnDef="lastName">
+                                          <th mat-header-cell *matHeaderCellDef mat-sort-header class="c-w-60">
+                                            lastName
+                                          </th>
+                                          <td mat-cell *matCellDef="let element;let i=index;" class="minWidth_200"
+                                            [ngClass]="{'table-tr-bg-color': selectedRow == i}">
+                                            {{element.lastName}} </td>
+                                        </ng-container> -->
+                                      <!-- <ng-container matColumnDef="userName">
+                                          <th mat-header-cell *matHeaderCellDef mat-sort-header class="c-w-60">
+                                            userName
+                                          </th>
+                                          <td mat-cell *matCellDef="let element;let i=index;" class="minWidth_200"
+                                            [ngClass]="{'table-tr-bg-color': selectedRow == i}">
+                                            {{element.userName}} </td>
+                                        </ng-container> -->
+                                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                      <tr mat-row class="rowZoom" *matRowDef="let row; columns: displayedColumns;"
+                                        (click)="leftSelection.toggle(row);"
+                                        [ngClass]="{'highlighted_2': leftSelection.isSelected(row)}"></tr>
+  
+                                    </table>
+                                  </div>
+                                </div>
+  
+                                <div
+                                  class="col-md-1 rowSwapeArrowSec d-flex align-items-center justify-content-center my-3">
+                                  <div class="rowSwapeArrowDiv1CCC">
+                                    <div class="rowSwapeArrowDiv2CCC">
+                                      <button class="mapping_moveIcon mb-3" mat-button (click)="moveLeftToRight()">
+                                        <span class="mappingArrowIcon">
+                                          <mat-icon>arrow_forward</mat-icon>
+                                          <!-- <mat-icon>arrow_forward_ios</mat-icon> -->
+                                          <!-- <mat-icon>chevron_right</mat-icon> -->
+                                        </span>
+                                      </button>
+                                      <button class="mapping_moveIcon" mat-button (click)="moveRightToLeft()">
+                                        <span class="mappingArrowIcon">
+                                          <mat-icon>arrow_back</mat-icon>
+                                          <!-- <mat-icon>arrow_back_ios</mat-icon> -->
+                                          <!-- <mat-icon>chevron_left</mat-icon> -->
+                                        </span>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+  
+                                <div class="col-md-5 mb-3">
+                                  <div class="cust_scrollbar mapping_divBox">
+                                    <table mat-table [dataSource]="toDataSource"
+                                      class="dTable alt-custom-table table custom_table_1" matSort>
+                                      <ng-container matColumnDef="Select">
+                                        <th mat-header-cell *matHeaderCellDef class="c-w-5 pl-2">
+                                          <mat-checkbox color="primary" (change)="$event ? mastertableToggle() : null;"
+                                            [checked]="rightSelection.hasValue() && istableSelected()"
+                                            [indeterminate]="rightSelection.hasValue() && !istableSelected()"
+                                            [aria-label]="checkboxLabelRight()">
+                                          </mat-checkbox>
+                                        </th>
+                                        <td mat-cell *matCellDef="let row">
+                                          <mat-checkbox color="primary" (click)="$event.stopPropagation();"
+                                            (change)="$event ? rightSelection.toggle(row) : null; "
+                                            [checked]="rightSelection.isSelected(row)"
+                                            [aria-label]="checkboxLabelRight(row)" required>
+                                          </mat-checkbox>
+                                        </td>
+                                      </ng-container>
+                                      <ng-container matColumnDef="firstName">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-2">
+                                          {{labels?.available}}</th>
+                                        <td nowrap mat-cell *matCellDef="let element;let i=index;"
+                                          [ngClass]="{'table-tr-bg-color': selectedRow == i}">
+                                          {{element.firstName}} {{element.middleName}} {{element.lastName}}</td>
+                                      </ng-container>
+                                      <!-- <ng-container matColumnDef="middleName">
+                                          <th mat-header-cell *matHeaderCellDef mat-sort-header class="c-w-10">
+                                            middleName</th>
+                                          <td mat-cell *matCellDef="let element;let i=index;"  class="minWidth_200"
+                                            [ngClass]="{'table-tr-bg-color': selectedRow == i}">
+                                            {{element.middleName }}
+                                          </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="lastName">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="c-w-10">
+                                              lastName
+                                            </th>
+                                            <td mat-cell *matCellDef="let element;let i=index;"
+                                              [ngClass]="{'table-tr-bg-color': selectedRow == i}">
+                                              {{element.lastName}} </td>
+                                          </ng-container>
+                                        <ng-container matColumnDef="userName">
+                                          <th mat-header-cell *matHeaderCellDef mat-sort-header class="c-w-60">
+                                            userName
+                                          </th>
+                                          <td mat-cell *matCellDef="let element;let i=index;" class="minWidth_200"
+                                            [ngClass]="{'table-tr-bg-color': selectedRow == i}">
+                                            {{element.userName}} </td>
+                                        </ng-container> -->
+                                      <tr mat-header-row *matHeaderRowDef="displayingColumns"></tr>
+                                      <tr mat-row class="rowZoom" *matRowDef="let row; columns: displayingColumns;"
+                                        (click)="rightSelection.toggle(row); "
+                                        [ngClass]="{'highlighted_2': rightSelection.isSelected(row)}"></tr>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+  
+                          <div class="row">
+                            <div class="col-md-11 text-center">
+                              <button mat-raised-button color="primary" class="btn-orange mr-2"
+                                routerLink="/team-user-mapping">{{labels?.back}}</button>
+                              <button mat-raised-button color="primary"
+                                [disabled]="!teamMapForm.valid || sourceFrom.length == 0"
+                                (click)="onSave()" type="save">{{labels?.map}}</button>
+                            </div>
+                          </div>
+                        </div>
+  
+                      </div>
+                    </div>
+  
+                  </form>
+                </div>
+              </div>
+  
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  
+  </div>
